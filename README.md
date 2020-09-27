@@ -12,8 +12,18 @@ https://cloud.google.com/docs/authentication/getting-started
   From the Role list, select Project > Owner.  
   Click Create. A JSON file that contains your key downloads to your computer. Save it in your project folder. We will need this file in step 2
 
-## STEP 2: Setting the environment variable
+## STEP 2: Setting the environment variable  
+Command line (PowerShell or command prompt) instructions for setting the environment variable  did not work for me. I set it manually as:
 
+Go to *Start > Computer >* right click on *Properties > Advanced system settings*
+Under *Advanced* tab, click *Environment Variables...* Under section *System variables*, click *New...*
+GOOGLE_APPLICATION_CREDENTIALS
+d:\Users\ved\Data Science\My Project 65719-247605f2d810.json
+
+need to restart the computer 
+
+In the Edit System Variable (or New System Variable) window, specify the value of the PATH environment variable. Click OK. Close all remaining windows by clicking OK.
+Reopen Command prompt window, and run your java code.
 Install google-cloud-bigquery by opening Anaconda prompt and try the following:
 > conda install -c conda-forge google-cloud-bigquery
 
