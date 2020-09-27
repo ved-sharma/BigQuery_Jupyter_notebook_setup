@@ -1,5 +1,18 @@
-# Conneting to BigQuery from Jupyter IPython notebook
-## STEP 1: 
+# Conneting to BigQuery from Jupyter/IPython notebook
+I already had the Anaconda installation of JupyterLab on my Windows 7 computer. I wanted to connect to BigQuery and fetch data using SQL queries into a pandas dataframe. Following are the steps which worked for me:
+
+## STEP 1: Create a service account on Google Cloud API  
+There is extensive documentation on Google Cloud website. I followed below instructions:
+https://cloud.google.com/docs/authentication/getting-started  
+- On Google Cloud Console, create or select a project.  
+- Go to the Create service account key page.  
+  https://console.cloud.google.com/apis/credentials/serviceaccountkey  
+- From the Service account list, select New service account.  
+  In the Service account name field, enter a name.  
+  From the Role list, select Project > Owner.  
+  Click Create. A JSON file that contains your key downloads to your computer. Save it in your project folder. We will need this file in step 2
+
+## STEP 2: Setting the environment variable
 
 Install google-cloud-bigquery by opening Anaconda prompt and try the following:
 > conda install -c conda-forge google-cloud-bigquery
