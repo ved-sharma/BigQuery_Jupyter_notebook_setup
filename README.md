@@ -23,10 +23,11 @@ Variable value: d:\Users\ved\Data Science\SQL-BigQuery-Jupyter-3d11b79a2e69.json
 [replace the path above with the location of where you saved the service accout key JSON file in step 1]  
 
 Click OK. Close all remaining windows by clicking OK.
-If your JupyterLab session is already open , then restart Anaconda and JupyterLab
+If your JupyterLab session is already open , then restart Anaconda Navigator and JupyterLab
 
 Check if the environment variable was created successfully by running magic command %env in the Jupyter notebook  
-**Note**: In your Jupyter notebook, if you see "DefaultCredentialsError: Could not automatically determine credentials.", it means that the GOOGLE_APPLICATION_CREDENTIALS environemnt variable was not created or set correctly.
+
+**Note:** In your Jupyter notebook, if you see "DefaultCredentialsError: Could not automatically determine credentials.", it means that the GOOGLE_APPLICATION_CREDENTIALS environemnt variable was not created or set correctly.
 
 ## STEP 3: Installing the BigQuery Python client library  
 For detailed instructions, please check:  
@@ -38,9 +39,9 @@ Open Anaconda Prompt and install the following pacakges one-by-one:
 > conda install -c conda-forge pandas  
 > conda install -c conda-forge pyarrow  
 
-[Note: if you see “EnvironmentNotWritableError”, run the Anaconda prompt in Admin mode (right click and select Run as Administrator) and try running above commands again.]  
+**Note:** if you see “EnvironmentNotWritableError”, run the Anaconda prompt in Admin mode (right click and select Run as Administrator) and try running above commands again.  
 
-Above commands will download and install a bunch of packages. Would need to restart Anaconda Navigator if it was already open. You should be able to see “google-cloud-bigquery” and lot of other packages under Environments > base (root) in Anaconda Navigator
+Above commands will download and install/upgrade a bunch of packages. Would need to restart Anaconda Navigator if it was already open. You should be able to see “google-cloud-bigquery” and lot of other packages under Environments > base (root) in Anaconda Navigator.
 
 ## STEP 4: Accessing BigQuery data from Jupyter notebook 
 Following is an example script for accessing stackoverflow dataset from bigquery-public-data
@@ -64,23 +65,24 @@ tables = list(client.list_tables(dataset))
 list_of_tables =[table.table_id for table in tables]
 print(list_of_tables)
 ```
-If the above runs and gives you the list of table, then you are all set. Congratulations!!!
+If the above runs and gives you the list of tables, then you are all set. Congratulations!!!
 ```
 ['badges', 'comments', 'post_history', 'post_links', 'posts_answers', 'posts_moderator_nomination', 'posts_orphaned_tag_wiki', 'posts_privilege_wiki', 'posts_questions', 'posts_tag_wiki', 'posts_tag_wiki_excerpt', 'posts_wiki_placeholder', 'stackoverflow_posts', 'tags', 'users', 'votes']
-```
-In my case, I encountered errors and had to fix two dependency issues for the above code working:
+```  
+
+In my case, I encountered errors and had to fix two dependency issues for the above code to work:
 1. ImportError: cannot import name 'collections_abc' from 'six.moves' (unknown location)  
 bigquery is not being imported propoerly due to the dependency issue with a package called six. This is a known issue:  
 https://github.com/googleapis/google-cloud-python/issues/9965  
-upgrading six to to the latest version 1.12.0 to 1.15.0 fixed this issue:  
+upgrading six to to the latest version (1.12.0 to 1.15.0) fixed this issue:  
 > conda install -c anaconda six  
 
 2. AttributeError: 'ClientOptions' object has no attribute 'scopes'  
-This is known issue https://github.com/googleapis/google-cloud-python/issues/10471  
+This is also a known issue https://github.com/googleapis/google-cloud-python/issues/10471  
 downgrading google-cloud-core 1.4.0 to 1.3.0 fixed this issue:  
 > conda install -c conda-forge google-cloud-core=1.3.0  
 
-Notes:
+## Notes
 pandas-gbq  is a community-led project by the pandas community. It provides an interface to the Google BigQuery and is an alternative way of connecting to BigQuery API. For more details, please check out:  
 https://pandas-gbq.readthedocs.io/en/latest/  
 https://cloud.google.com/bigquery/docs/pandas-gbq-migration
