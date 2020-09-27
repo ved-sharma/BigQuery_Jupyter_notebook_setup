@@ -1,7 +1,7 @@
 # Conneting to BigQuery from Jupyter/IPython notebook
-I already had the Anaconda installation of JupyterLab on my Windows 7 computer. I wanted to connect to BigQuery and fetch data using SQL queries into a pandas dataframe. Following are the steps which worked for me:
+I already had the Anaconda installation of JupyterLab on my Windows 7 computer. I wanted to connect to BigQuery API and fetch data from Jupyter notebook using SQL queries into a pandas dataframe. Following are the steps which worked for me:
 
-## STEP 1: Create a service account on Google Cloud API  
+## STEP 1: Creating a service account on Google Cloud API  
 There is extensive documentation on Google Cloud website. I followed below instructions:
 https://cloud.google.com/docs/authentication/getting-started  
 - On Google Cloud Console, create or select a project.  
@@ -13,20 +13,25 @@ https://cloud.google.com/docs/authentication/getting-started
   Click Create. A JSON file that contains your key downloads to your computer. Save it in your project folder. We will need this file in step 2
 
 ## STEP 2: Setting the environment variable  
-Command line (PowerShell or command prompt) instructions for setting the environment variable  did not work for me. I set it manually as:  
+Command line (PowerShell or command prompt) instructions for setting the environment variable  did not work for me. I had to set it manually as follows:  
+
 Go to *Start > Computer >* right click on *Properties > Advanced system settings*  
 Under *Advanced* tab, click *Environment Variables...* Under section *System variables*, click *New...*  
+
 Variable name: GOOGLE_APPLICATION_CREDENTIALS  
 Variable value: d:\Users\ved\Data Science\SQL-BigQuery-Jupyter-3d11b79a2e69.json  
 [replace the path above with the location of where you saved the service accout key JSON file in step 1]  
+
 Click OK. Close all remaining windows by clicking OK.
 If your JupyterLab session is already open , then restart Anaconda and JupyterLab
 
-Check if the environment variable was created by running magic command %env in the Jupyter notebook
-[Note: In your Jupyter notebook, if you see "DefaultCredentialsError: Could not automatically determine credentials.", it means that the GOOGLE_APPLICATION_CREDENTIALS environemnt variable was not set properly]
+Check if the environment variable was created successfully by running magic command %env in the Jupyter notebook  
+**Note**: In your Jupyter notebook, if you see "DefaultCredentialsError: Could not automatically determine credentials.", it means that the GOOGLE_APPLICATION_CREDENTIALS environemnt variable was not created or set correctly.
 
-## STEP 3: Install the BigQuery Python client library  
+## STEP 3: Installing the BigQuery Python client library  
+For detailed instructions, please check:  
 https://cloud.google.com/bigquery/docs/bigquery-storage-python-pandas  
+
 Open Anaconda Prompt and install the following pacakges one-by-one:  
 > conda install -c conda-forge google-cloud-bigquery  
 > conda install -c conda-forge google-cloud-bigquery-storage  
@@ -65,8 +70,8 @@ If the above runs and gives you the list of table, then you are all set. Congrat
 ```
 In my case, I encountered errors and had to fix two dependency issues for the above code working:
 1. ImportError: cannot import name 'collections_abc' from 'six.moves' (unknown location)  
-bigquery was not being imported propoerly due to the dependency issue with a package called six
-This is a known issue https://github.com/googleapis/google-cloud-python/issues/9965  
+bigquery is not being imported propoerly due to the dependency issue with a package called six. This is a known issue:  
+https://github.com/googleapis/google-cloud-python/issues/9965  
 upgrading six to to the latest version 1.12.0 to 1.15.0 fixed this issue:  
 > conda install -c anaconda six  
 
@@ -76,6 +81,6 @@ downgrading google-cloud-core 1.4.0 to 1.3.0 fixed this issue:
 > conda install -c conda-forge google-cloud-core=1.3.0  
 
 Notes:
-1. pandas-gbq  is a community-led project by the pandas community. It provides an interface to the Google BigQuery and is an alternative way of connecting to BigQuery API. For more details, please check out:
-https://pandas-gbq.readthedocs.io/en/latest/
+pandas-gbq  is a community-led project by the pandas community. It provides an interface to the Google BigQuery and is an alternative way of connecting to BigQuery API. For more details, please check out:  
+https://pandas-gbq.readthedocs.io/en/latest/  
 https://cloud.google.com/bigquery/docs/pandas-gbq-migration
