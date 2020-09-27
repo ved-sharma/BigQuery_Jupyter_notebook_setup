@@ -32,6 +32,7 @@ Open Anaconda Prompt and install the following pacakges one-by-one:
 > conda install -c conda-forge google-cloud-bigquery-storage  
 > conda install -c conda-forge pandas  
 > conda install -c conda-forge pyarrow  
+
 [Note: if you see “EnvironmentNotWritableError”, run the Anaconda prompt in Admin mode (right click and select Run as Administrator) and try running above commands again.]  
 
 Above commands will download and install a bunch of packages. Would need to restart Anaconda Navigator if it was already open. You should be able to see “google-cloud-bigquery” and lot of other packages under Environments > base (root) in Anaconda Navigator
@@ -58,21 +59,23 @@ tables = list(client.list_tables(dataset))
 list_of_tables =[table.table_id for table in tables]
 print(list_of_tables)
 ```
-It above runs and gives you the following result, then you are all set.
-
+If the above runs and gives you the list of table, then you are all set. Congratulations!!!
+```
 ['badges', 'comments', 'post_history', 'post_links', 'posts_answers', 'posts_moderator_nomination', 'posts_orphaned_tag_wiki', 'posts_privilege_wiki', 'posts_questions', 'posts_tag_wiki', 'posts_tag_wiki_excerpt', 'posts_wiki_placeholder', 'stackoverflow_posts', 'tags', 'users', 'votes']
+```
+In my case, I encountered errors and had to fix two dependency issues for the above code working:
+1. ImportError: cannot import name 'collections_abc' from 'six.moves' (unknown location)  
+bigquery was not being imported propoerly due to the dependency issue with a package called six
+This is a known issue https://github.com/googleapis/google-cloud-python/issues/9965  
+upgrading six to to the latest version 1.12.0 to 1.15.0 fixed this issue:  
+> conda install -c anaconda six  
 
-In my case, I encountered errors and had to fix two dependency issues to get the above code working:
-1. ImportError: cannot import name 'collections_abc' from 'six.moves' (unknown location)
-bigquery was not being imported propoerly due to six package dependency issue
-This is a known issue https://github.com/googleapis/google-cloud-python/issues/9965
-upgrading six to to the latest version 1.12.0 to 1.15.0 fixed this issue
-> conda install -c anaconda six
+2. AttributeError: 'ClientOptions' object has no attribute 'scopes'  
+This is known issue https://github.com/googleapis/google-cloud-python/issues/10471  
+downgrading google-cloud-core 1.4.0 to 1.3.0 fixed this issue:  
+> conda install -c conda-forge google-cloud-core=1.3.0  
 
-2. AttributeError: 'ClientOptions' object has no attribute 'scopes'
-This is known issue https://github.com/googleapis/google-cloud-python/issues/10471
-downgrading google-cloud-core 1.4.0 to 1.3.0 fixed this issue
-conda install -c conda-forge google-cloud-core=1.3.0
-
-https://cloud.google.com/bigquery/docs/bigquery-storage-python-pandas#conda
-conda install -c conda-forge pandas-gbq
+Notes:
+1. pandas-gbq  is a community-led project by the pandas community. It provides an interface to the Google BigQuery and is an alternative way of connecting to BigQuery API. For more details, please check out:
+https://pandas-gbq.readthedocs.io/en/latest/
+https://cloud.google.com/bigquery/docs/pandas-gbq-migration
