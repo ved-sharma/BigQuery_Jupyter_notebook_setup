@@ -1,4 +1,4 @@
-# Conneting to BigQuery from Jupyter/IPython notebook
+# Connecting to BigQuery from Jupyter/IPython notebook
 I already had the Anaconda installation of JupyterLab on my Windows 7 computer. I wanted to connect to BigQuery API and fetch data from Jupyter notebook using SQL queries into a pandas dataframe. Here are the steps:
 
 ## STEP 1: Creating a service account on Google Cloud API  
@@ -75,17 +75,17 @@ In my case, I encountered errors and had to fix two dependency issues for the ab
 bigquery is not being imported propoerly due to the dependency issue with a package called six. This is a known issue:  
 https://github.com/googleapis/google-cloud-python/issues/9965  
 upgrading six to to the latest version (1.12.0 to 1.15.0) fixed this issue:  
-> conda install -c anaconda six  
+  > conda install -c anaconda six  
 
 2. AttributeError: 'ClientOptions' object has no attribute 'scopes'  
 This is also a known issue https://github.com/googleapis/google-cloud-python/issues/10471  
 downgrading google-cloud-core 1.4.0 to 1.3.0 fixed this issue:  
-> conda install -c conda-forge google-cloud-core=1.3.0  
+  > conda install -c conda-forge google-cloud-core=1.3.0  
 
-## STEP 5: Writing SQL queries for accessing BigQuery data  
+## STEP 5: Running SQL queries for accessing BigQuery data  
 
 
 ## Notes
-pandas-gbq  is a community-led project by the pandas community. It provides an interface to the Google BigQuery and is an alternative way of connecting to BigQuery API. For more details, please check out:  
+An alternative way of connecting to BigQuery is through pandas-gbq package, which is being led by the pandas community. For more details, check out:  
 https://pandas-gbq.readthedocs.io/en/latest/  
 https://cloud.google.com/bigquery/docs/pandas-gbq-migration
